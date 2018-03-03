@@ -6,8 +6,9 @@ import be.ordina.blog.repository.PostRepository;
 import be.ordina.blog.repository.TopicRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
+
+import static java.time.LocalDateTime.now;
 
 @Service
 public class TopicService {
@@ -26,7 +27,7 @@ public class TopicService {
     }
 
     public void addTopic(Topic topic) {
-        topic.setCreationTime(LocalDateTime.now());
+        topic.setCreationTime(now());
         topicRepository.saveAndFlush(topic);
     }
 
@@ -39,6 +40,7 @@ public class TopicService {
     }
 
     public void addPostToTopic(long topicId, Post post) {
+        post.setCreationTime(now());
         Topic topic = topicRepository.findOne(topicId);
         postRepository.save(post);
         topic.getPosts().add(post);

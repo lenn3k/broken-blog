@@ -1,5 +1,6 @@
 package be.ordina.blog.controller;
 
+import be.ordina.blog.model.Comment;
 import be.ordina.blog.model.Post;
 import be.ordina.blog.service.PostService;
 import org.slf4j.Logger;
@@ -39,9 +40,9 @@ public class PostRestController {
         return postService.getPostById(id);
     }
 
-    @RequestMapping(value = "/{id}/posts", method = POST)
-    public void addPostToPost(@PathVariable Long id, @RequestBody Post post) {
-        postService.addPostToPost(post, id);
+    @RequestMapping(value = "/{id}/comments", method = POST)
+    public void addPostToPost(@PathVariable Long id, @RequestBody Comment comment) {
+        postService.addCommentToPost(comment, id);
     }
 
     @RequestMapping(value = "/{id}", method = DELETE)
