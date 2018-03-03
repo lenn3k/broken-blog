@@ -1,21 +1,21 @@
 package be.ordina.blog.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Entity
 public class User {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
     @NotNull
     private String firstName;
     @NotNull
     private String lastName;
-    @OneToMany
-    private List<Post> posts;
 
     public User() {}
 
@@ -47,13 +47,5 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public List<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
     }
 }

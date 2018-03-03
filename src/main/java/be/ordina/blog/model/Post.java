@@ -1,18 +1,22 @@
 package be.ordina.blog.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-public class Post {
+public class Post extends Ownable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
+    @NotNull
     private String title;
+    @NotNull
     private String body;
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+    private List<Post> comments = new ArrayList<>();
 
     public Post() {}
 
@@ -38,5 +42,13 @@ public class Post {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public List<Post> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Post> comments) {
+        this.comments = comments;
     }
 }

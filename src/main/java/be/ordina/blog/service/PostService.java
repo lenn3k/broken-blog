@@ -22,4 +22,15 @@ public class PostService {
     public Post getPostById(long id) {
         return postRepository.findOne(id);
     }
+
+    public void addPostToPost(Post post, Long id) {
+        Post parentPost = postRepository.findOne(id);
+        parentPost.getComments().add(post);
+        postRepository.save(post);
+        postRepository.save(parentPost);
+    }
+
+    public void deletePostById(Long id) {
+
+    }
 }
