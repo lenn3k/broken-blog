@@ -1,6 +1,7 @@
 package be.ordina.blog.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -21,7 +22,7 @@ public class Post extends Ownable {
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss dd-MM-yyyy")
     private LocalDateTime creationTime;
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     public Post() {}

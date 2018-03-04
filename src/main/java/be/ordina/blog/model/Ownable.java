@@ -1,14 +1,21 @@
 package be.ordina.blog.model;
 
+import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
+
+@MappedSuperclass
 public class Ownable {
 
-    protected String username;
+    private static final String DEFAULT_USERNAME = "Anonymous";
 
-    public String getUsername() {
-        return username;
+    @NotNull
+    protected String author = DEFAULT_USERNAME;
+
+    public String getAuthor() {
+        return author;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

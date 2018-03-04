@@ -27,7 +27,7 @@ public class Topic extends Ownable {
     public Topic(){}
 
     public Topic(String author, String title, String description) {
-        setUsername(author);
+        setAuthor(author);
         setTitle(title);
         setDescription(description);
     }
