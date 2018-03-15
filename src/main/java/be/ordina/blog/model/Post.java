@@ -20,7 +20,6 @@ public class Post extends Ownable {
     @NotNull
     private String body;
     @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss dd-MM-yyyy")
     private LocalDateTime creationTime;
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
