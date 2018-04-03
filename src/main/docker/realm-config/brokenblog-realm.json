@@ -1,6 +1,6 @@
 {
-    "id" : "jhipster",
-    "realm" : "jhipster",
+    "id" : "brokenblog",
+    "realm" : "brokenblog",
     "notBefore" : 0,
     "revokeRefreshToken" : false,
     "accessTokenLifespan" : 300,
@@ -38,14 +38,14 @@
             "scopeParamRequired" : false,
             "composite" : false,
             "clientRole" : false,
-            "containerId" : "jhipster"
+            "containerId" : "brokenblog"
         }, {
             "id" : "76c3b939-5a8e-491c-b71b-f35300dd469f",
             "name" : "ROLE_USER",
             "scopeParamRequired" : false,
             "composite" : false,
             "clientRole" : false,
-            "containerId" : "jhipster"
+            "containerId" : "brokenblog"
         }, {
             "id" : "49011634-ad5a-4dae-a772-8ec0018a9174",
             "name" : "offline_access",
@@ -53,7 +53,7 @@
             "scopeParamRequired" : true,
             "composite" : false,
             "clientRole" : false,
-            "containerId" : "jhipster"
+            "containerId" : "brokenblog"
         }, {
             "id" : "0b7bc7d5-67d2-4ee4-8ad3-6b07bb21240a",
             "name" : "uma_authorization",
@@ -61,7 +61,7 @@
             "scopeParamRequired" : false,
             "composite" : false,
             "clientRole" : false,
-            "containerId" : "jhipster"
+            "containerId" : "brokenblog"
         } ],
         "client" : {
             "internal" : [ {
@@ -313,13 +313,13 @@
         "id" : "d62f44e6-44ed-43f1-a5fd-16278f34ca06",
         "clientId" : "account",
         "name" : "${client_account}",
-        "baseUrl" : "/auth/realms/jhipster/account",
+        "baseUrl" : "/auth/realms/brokenblog/account",
         "surrogateAuthRequired" : false,
         "enabled" : true,
         "clientAuthenticatorType" : "client-secret",
         "secret" : "**********",
         "defaultRoles" : [ "view-profile", "manage-account" ],
-        "redirectUris" : [ "/auth/realms/jhipster/account/*" ],
+        "redirectUris" : [ "/auth/realms/brokenblog/account/*" ],
         "webOrigins" : [ ],
         "notBefore" : 0,
         "bearerOnly" : false,
@@ -951,12 +951,12 @@
         "id" : "c1419b24-cff4-43fd-92a0-1f1630485822",
         "clientId" : "security-admin-console",
         "name" : "${client_security-admin-console}",
-        "baseUrl" : "/auth/admin/jhipster/console/index.html",
+        "baseUrl" : "/auth/admin/brokenblog/console/index.html",
         "surrogateAuthRequired" : false,
         "enabled" : true,
         "clientAuthenticatorType" : "client-secret",
         "secret" : "**********",
-        "redirectUris" : [ "/auth/admin/jhipster/console/*" ],
+        "redirectUris" : [ "/auth/admin/brokenblog/console/*" ],
         "webOrigins" : [ ],
         "notBefore" : 0,
         "bearerOnly" : false,
@@ -1243,12 +1243,12 @@
         "useTemplateMappers" : false
     }, {
         "id" : "9080f291-17ef-4022-8afe-8822595006c6",
-        "clientId" : "jhipster-registry",
+        "clientId" : "brokenblog-registry",
         "rootUrl" : "http://localhost:8761",
         "surrogateAuthRequired" : false,
         "enabled" : true,
         "clientAuthenticatorType" : "client-secret",
-        "secret" : "jhipster-registry",
+        "secret" : "brokenblog-registry",
         "redirectUris" : [ "http://localhost:8761/*", "http://127.0.0.1:8761/*" ],
         "webOrigins" : [ "http://localhost:8761/*", "http://127.0.0.1:8761/*" ],
         "notBefore" : 0,
