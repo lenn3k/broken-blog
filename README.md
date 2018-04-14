@@ -15,3 +15,7 @@ In the ./src/main/docker folder run the following command
 Point your browser to `http://localhost:9080` and login as 'admin/admin'
 
 You'll see that there are two realms configured (master and jhipster) because we mounted the realm-config folder into our Docker container.
+
+## Sources
+
+* [http://www.baeldung.com/spring-boot-keycloak](http://www.baeldung.com/spring-boot-keycloak)
