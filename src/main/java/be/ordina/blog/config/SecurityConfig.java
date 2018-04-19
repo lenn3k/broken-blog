@@ -52,15 +52,20 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter  {
                 .antMatchers(HttpMethod.PUT,"/api/v1/*")
                 .hasRole("user")
                 .anyRequest()
-                .permitAll();
+                .authenticated();
         http.authorizeRequests()
                 .antMatchers(HttpMethod.DELETE,"/api/v1/*")
                 .hasRole("user")
                 .anyRequest()
-                .permitAll();
+                .authenticated();
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/api/v1/*")
                 .hasRole("user")
+                .anyRequest()
+                .authenticated();
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.GET,"/api/v1/*")
+                .hasRole("")
                 .anyRequest()
                 .permitAll();
         //insecurity everywhere!
