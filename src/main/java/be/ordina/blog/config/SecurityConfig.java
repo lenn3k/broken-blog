@@ -58,6 +58,11 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter  {
                 .hasRole("user")
                 .anyRequest()
                 .permitAll();
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.POST,"/api/v1/*")
+                .hasRole("user")
+                .anyRequest()
+                .permitAll();
         //insecurity everywhere!
         http.csrf().disable();
         // h2 console won't load without this option
