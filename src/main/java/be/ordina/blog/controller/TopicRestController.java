@@ -4,8 +4,10 @@ import be.ordina.blog.model.Post;
 import be.ordina.blog.model.Topic;
 import be.ordina.blog.service.TopicService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -38,7 +40,8 @@ public class TopicRestController {
     @ApiOperation(
             value = "Create a new topic")
     @RequestMapping(method = POST)
-    public void addTopic(@RequestBody Topic topic) {
+    public void addTopic(@RequestBody Topic topic, Principal principal , Model model) {
+        System.out.println(principal.toString());
         topicService.addTopic(topic);
     }
 
