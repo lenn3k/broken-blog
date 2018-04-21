@@ -47,7 +47,7 @@ public class PostRestController {
             value = "Update a post",
             notes = "id should be provided in the request body of the post")
     @RequestMapping(method = PUT)
-    public void updatePost(@PathVariable long postId, @RequestBody Post post , Principal principal) {
+    public void updatePost(@PathVariable long postId, @RequestBody Post post , Principal principal)throws ForbiddenException {
         logger.info("Request to update post", postId);
         postService.updatePost(post);
     }
@@ -56,8 +56,9 @@ public class PostRestController {
             value = "Update a post",
             notes = "postId from the URL is used to select the post")
     @RequestMapping(value = "/{postId}", method = PUT)
-    public void updatePostById(@PathVariable long postId, @RequestBody Post post , Principal principal) {
+    public void updatePostById(@PathVariable long postId, @RequestBody Post post , Principal principal) throws ForbiddenException {
         logger.info("Request to update post with id {}", postId);
+        if (! principal.toString().contains("ROLE_moderator")) throw new ForbiddenException("This user doesn't have moderator rights!");
         post.setId(postId);
         postService.updatePost(post);
     }
@@ -66,28 +67,30 @@ public class PostRestController {
             value = "Deletes a post",
             notes = "This method is far less performing than /topics/{topicId}/posts/{postsId}. Use with caution.")
     @RequestMapping(value = "/{postId}", method = DELETE)
-    public void deletePostById(@PathVariable long postId  , Principal principal) {
+    public void deletePostById(@PathVariable long postId  , Principal principal)throws ForbiddenException {
         postService.deletePostById(postId);
     }
 
     @ApiOperation(
             value = "Get all comment of a post")
     @RequestMapping(value = "/{postId}/comments", method = GET)
-    public List<Comment> getCommentsForPost(@PathVariable long postId  , Principal principal) {
+    public List<Comment> getCommentsForPost(@PathVariable long postId  , Principal principal)throws ForbiddenException {
         return postService.getCommentsForPost(postId);
     }
 
     @ApiOperation(
             value = "Get a comment of a post")
     @RequestMapping(value = "/{postId}/comments/{commentId}", method = GET)
-    public Comment getCommentForPost(@PathVariable long postId, @PathVariable long commentId  , Principal principal) {
+    public Comment getCommentForPost(@PathVariable long postId, @PathVariable long commentId
+            , Principal principal)throws ForbiddenException {
         return postService.getCommentForPost(commentId, postId);
     }
 
     @ApiOperation(
             value = "Create a new comment for a post")
     @RequestMapping(value = "/{postId}/comments", method = POST)
-    public void addCommentToPost(@PathVariable long postId, @RequestBody Comment comment, Principal principal) {
+    public void addCommentToPost(@PathVariable long postId, @RequestBody Comment comment, Principal principal)throws ForbiddenException {
+        comment.setAuthor(principal.getName());
         postService.addCommentToPost(comment, postId);
     }
 
@@ -104,7 +107,8 @@ public class PostRestController {
             value = "Update a comment from a post",
             notes = "commentId in URL will be used for selecting the comment")
     @RequestMapping(value = "/{postId}/comments/{commentId}", method = PUT)
-    public void updateCommentForPost(@PathVariable long postId, @PathVariable long commentId, @RequestBody Comment comment, Principal principal) {
+    public void updateCommentForPost(@PathVariable long postId, @PathVariable long commentId,
+                                     @RequestBody Comment comment, Principal principal)throws ForbiddenException {
         comment.setId(commentId);
         postService.updateCommentForPost(comment, postId);
     }

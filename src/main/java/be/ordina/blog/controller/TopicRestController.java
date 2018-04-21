@@ -42,6 +42,7 @@ public class TopicRestController {
             value = "Create a new topic")
     @RequestMapping(method = POST)
     public void addTopic(@RequestBody Topic topic, Principal principal) {
+        topic.setAuthor(principal.getName());
         topicService.addTopic(topic);
     }
 
@@ -49,7 +50,7 @@ public class TopicRestController {
             value = "update a topic",
             notes = "id is expected in the request body topic")
     @RequestMapping(method = PUT)
-    public void updateTopic(@RequestBody Topic topic,Principal principal) {
+    public void updateTopic(@RequestBody Topic topic,Principal principal) throws ForbiddenException {
         topicService.updateTopic(topic);
     }
 
@@ -57,7 +58,8 @@ public class TopicRestController {
             value = "Update a topic",
             notes = "topicId in the URL is used to select the topic")
     @RequestMapping(value="/{topicId}" , method = PUT)
-    public void updateTopic(@PathVariable long topicId, @RequestBody Topic topic , Principal principal) {
+    public void updateTopic(@PathVariable long topicId,
+                            @RequestBody Topic topic , Principal principal) throws ForbiddenException {
         topic.setId(topicId);
         topicService.updateTopic(topic);
     }
@@ -75,21 +77,23 @@ public class TopicRestController {
     @ApiOperation(
             value = "Get all post of a topic")
     @RequestMapping(value="/{topicId}/posts", method = GET)
-    public List<Post> getPostsForTopic(@PathVariable long topicId ,Principal principal) {
+    public List<Post> getPostsForTopic(@PathVariable long topicId ,Principal principal) throws ForbiddenException {
         return topicService.getPostsForTopic(topicId);
     }
 
     @ApiOperation(
             value = "Get a post of a topic")
     @RequestMapping(value="/{topicId}/posts/{postId}", method = GET)
-    public Post getPostForTopic(@PathVariable long topicId, @PathVariable long postId,Principal principal) {
+    public Post getPostForTopic(@PathVariable long topicId,
+                                @PathVariable long postId,Principal principal) throws ForbiddenException {
         return topicService.getPostForTopic(postId, topicId);
     }
 
     @ApiOperation(
             value = "Create a new post for a topic")
     @RequestMapping(value="/{topicId}/posts", method = POST)
-    public void addPostForTopic(@PathVariable long topicId, @RequestBody Post post, Principal principal) {
+    public void addPostForTopic(@PathVariable long topicId,
+                                @RequestBody Post post, Principal principal) throws ForbiddenException {
         topicService.addPostForTopic(post, topicId);
     }
 
@@ -97,7 +101,8 @@ public class TopicRestController {
             value = "Update a post from a topic",
             notes = "id is expected in the request body post")
     @RequestMapping(value="/{topicId}/posts", method = PUT)
-    public void updatePostForTopic(@PathVariable long topicId, @RequestBody Post post , Principal principal) {
+    public void updatePostForTopic(@PathVariable long topicId,
+                                   @RequestBody Post post , Principal principal) throws ForbiddenException{
         topicService.updatePostForTopic(post, topicId);
     }
 
@@ -105,7 +110,9 @@ public class TopicRestController {
             value = "Update a post from a topic",
             notes = "postId from URL is used to select the post")
     @RequestMapping(value="/{topicId}/posts/{postId}", method = PUT)
-    public void updatePostForTopic(@PathVariable long topicId, @PathVariable long postId, @RequestBody Post post , Principal principal) {
+    public void updatePostForTopic(@PathVariable long topicId, @PathVariable long postId,
+                                   @RequestBody Post post , Principal principal)throws ForbiddenException {
+
         post.setId(postId);
         topicService.updatePostForTopic(post, topicId);
     }
@@ -116,4 +123,6 @@ public class TopicRestController {
     public void deletePostForTopic(@PathVariable long topicId, @PathVariable long postId  , Principal principal) {
         topicService.removePostForTopic(postId, topicId);
     }
+
+
 }
