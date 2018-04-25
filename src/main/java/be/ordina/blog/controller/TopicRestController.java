@@ -1,13 +1,12 @@
 package be.ordina.blog.controller;
 
+import be.ordina.blog.exceptions.ForbiddenException;
 import be.ordina.blog.model.Post;
 import be.ordina.blog.model.Topic;
 import be.ordina.blog.service.TopicService;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.AccessDeniedException;
 import java.security.Principal;
 import java.util.List;
 
@@ -51,6 +50,9 @@ public class TopicRestController {
             notes = "id is expected in the request body topic")
     @RequestMapping(method = PUT)
     public void updateTopic(@RequestBody Topic topic,Principal principal) throws ForbiddenException {
+        if (!principal.getName().equals(topic.getAuthor()) || !principal.toString().contains("ROLE_moderator")){
+            throw new ForbiddenException("Not allowed!");
+        }
         topicService.updateTopic(topic);
     }
 
@@ -94,6 +96,7 @@ public class TopicRestController {
     @RequestMapping(value="/{topicId}/posts", method = POST)
     public void addPostForTopic(@PathVariable long topicId,
                                 @RequestBody Post post, Principal principal) throws ForbiddenException {
+        post.setAuthor(principal.getName());
         topicService.addPostForTopic(post, topicId);
     }
 
@@ -103,6 +106,9 @@ public class TopicRestController {
     @RequestMapping(value="/{topicId}/posts", method = PUT)
     public void updatePostForTopic(@PathVariable long topicId,
                                    @RequestBody Post post , Principal principal) throws ForbiddenException{
+        if (!principal.getName().equals(post.getAuthor()) || !principal.toString().contains("ROLE_admin")){
+            throw new ForbiddenException("This user doesn't have admin rights!");
+        }
         topicService.updatePostForTopic(post, topicId);
     }
 
@@ -112,6 +118,9 @@ public class TopicRestController {
     @RequestMapping(value="/{topicId}/posts/{postId}", method = PUT)
     public void updatePostForTopic(@PathVariable long topicId, @PathVariable long postId,
                                    @RequestBody Post post , Principal principal)throws ForbiddenException {
+        if (!principal.getName().equals(post.getAuthor()) || !principal.toString().contains("ROLE_admin")){
+            throw new ForbiddenException("This user doesn't have admin rights!");
+        }
 
         post.setId(postId);
         topicService.updatePostForTopic(post, topicId);
@@ -121,6 +130,9 @@ public class TopicRestController {
             value = "Delete a post from a topic")
     @RequestMapping(value = "/{topicId}/posts/{postId}", method = DELETE)
     public void deletePostForTopic(@PathVariable long topicId, @PathVariable long postId  , Principal principal) {
+        if (!principal.toString().contains("ROLE_admin")){
+            throw new ForbiddenException("This user doesn't have admin rights!");
+        }
         topicService.removePostForTopic(postId, topicId);
     }
 

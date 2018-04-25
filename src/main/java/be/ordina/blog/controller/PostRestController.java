@@ -1,10 +1,10 @@
 package be.ordina.blog.controller;
 
+import be.ordina.blog.exceptions.ForbiddenException;
 import be.ordina.blog.model.Comment;
 import be.ordina.blog.model.Post;
 import be.ordina.blog.service.PostService;
 import io.swagger.annotations.ApiOperation;
-import org.apache.http.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +48,9 @@ public class PostRestController {
             notes = "id should be provided in the request body of the post")
     @RequestMapping(method = PUT)
     public void updatePost(@PathVariable long postId, @RequestBody Post post , Principal principal)throws ForbiddenException {
+        if (!principal.getName().equals(post.getAuthor()) || !principal.toString().contains("ROLE_moderator")){
+            throw new ForbiddenException("Not allowed!");
+        }
         logger.info("Request to update post", postId);
         postService.updatePost(post);
     }
@@ -58,7 +61,7 @@ public class PostRestController {
     @RequestMapping(value = "/{postId}", method = PUT)
     public void updatePostById(@PathVariable long postId, @RequestBody Post post , Principal principal) throws ForbiddenException {
         logger.info("Request to update post with id {}", postId);
-        if (! principal.toString().contains("ROLE_moderator")) throw new ForbiddenException("This user doesn't have moderator rights!");
+        if (!principal.getName().equals(post.getAuthor()) ||! principal.toString().contains("ROLE_moderator")) throw new ForbiddenException("This user doesn't have moderator rights!");
         post.setId(postId);
         postService.updatePost(post);
     }
@@ -100,6 +103,9 @@ public class PostRestController {
             notes = "id should be provided in the request body comment")
     @RequestMapping(value = "/{postId}/comments", method = PUT)
     public void updateCommentForPost(@PathVariable long postId, @RequestBody Comment comment, Principal principal) throws ForbiddenException {
+        if (!principal.getName().equals(comment.getAuthor()) || !principal.toString().contains("ROLE_moderator")){
+            throw new ForbiddenException("Not allowed!");
+        }
         postService.updateCommentForPost(comment, postId);
     }
 
@@ -110,6 +116,9 @@ public class PostRestController {
     public void updateCommentForPost(@PathVariable long postId, @PathVariable long commentId,
                                      @RequestBody Comment comment, Principal principal)throws ForbiddenException {
         comment.setId(commentId);
+        if (!principal.getName().equals(comment.getAuthor()) || !principal.toString().contains("ROLE_moderator")){
+            throw new ForbiddenException("Not allowed!");
+        }
         postService.updateCommentForPost(comment, postId);
     }
 

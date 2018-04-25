@@ -1,4 +1,4 @@
-package be.ordina.blog.controller;
+package be.ordina.blog.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
