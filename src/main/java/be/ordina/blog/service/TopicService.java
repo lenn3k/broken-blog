@@ -4,10 +4,13 @@ import be.ordina.blog.model.Post;
 import be.ordina.blog.model.Topic;
 import be.ordina.blog.repository.PostRepository;
 import be.ordina.blog.repository.TopicRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import java.security.Principal;
 
 import javax.transaction.Transactional;
+//import java.security.Principal;
 import java.util.List;
 
 import static java.time.LocalDateTime.now;
@@ -40,11 +43,13 @@ public class TopicService {
     }
 
     @Transactional
+    @PreAuthorize("hasRole('ROLE_admin')")
     public void deleteTopicById(long id) {
         topicRepository.delete(id);
     }
 
     @Transactional
+    @PreAuthorize("hasRole('ROLE_user')")
     public void addPostForTopic(Post post, long topicId) {
         post.setCreationTime(now());
         Topic topic = topicRepository.findOne(topicId);
@@ -58,6 +63,7 @@ public class TopicService {
     }
 
     @Transactional
+    @PreAuthorize("#topic.getAuthor().equals(principal.name) OR hasRole('ROLE_admin')")
     public void updateTopic(Topic topic) {
         Topic persistedTopic = topicRepository.findOne(topic.getId());
         persistedTopic.setTitle(topic.getTitle());
@@ -72,6 +78,7 @@ public class TopicService {
     }
 
     @Transactional
+    @PreAuthorize("hasRole('ROLE_admin')")
     public void removePostForTopic(long postId, long topicId) {
         Topic topic = topicRepository.getOne(topicId);
         Post postToRemove = topic.getPosts().stream().filter(p->p.getId() == postId).findFirst().get();
@@ -80,6 +87,7 @@ public class TopicService {
     }
 
     @Transactional
+    @PreAuthorize("#post.getAuthor().equals(principal.name) OR hasRole('ROLE_moderator')")
     public void updatePostForTopic(Post post, long topicId) {
         Topic topic = topicRepository.getOne(topicId);
         Post postToModify = topic.getPosts().stream().filter(p->p.getId() == post.getId()).findFirst().get();

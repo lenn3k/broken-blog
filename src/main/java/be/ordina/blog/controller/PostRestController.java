@@ -1,6 +1,5 @@
 package be.ordina.blog.controller;
 
-import be.ordina.blog.exceptions.ForbiddenException;
 import be.ordina.blog.model.Comment;
 import be.ordina.blog.model.Post;
 import be.ordina.blog.service.PostService;
@@ -47,10 +46,7 @@ public class PostRestController {
             value = "Update a post",
             notes = "id should be provided in the request body of the post")
     @RequestMapping(method = PUT)
-    public void updatePost(@PathVariable long postId, @RequestBody Post post , Principal principal)throws ForbiddenException {
-        if (!principal.getName().equals(post.getAuthor()) || !principal.toString().contains("ROLE_moderator")){
-            throw new ForbiddenException("Not allowed!");
-        }
+    public void updatePost(@PathVariable long postId, @RequestBody Post post){
         logger.info("Request to update post", postId);
         postService.updatePost(post);
     }
@@ -59,9 +55,8 @@ public class PostRestController {
             value = "Update a post",
             notes = "postId from the URL is used to select the post")
     @RequestMapping(value = "/{postId}", method = PUT)
-    public void updatePostById(@PathVariable long postId, @RequestBody Post post , Principal principal) throws ForbiddenException {
-        logger.info("Request to update post with id {}", postId);
-        if (!principal.getName().equals(post.getAuthor()) ||! principal.toString().contains("ROLE_moderator")) throw new ForbiddenException("This user doesn't have moderator rights!");
+    public void updatePostById(@PathVariable long postId, @RequestBody Post post) {
+        logger.info("Request to update post with id {}", postId);;
         post.setId(postId);
         postService.updatePost(post);
     }
@@ -70,29 +65,28 @@ public class PostRestController {
             value = "Deletes a post",
             notes = "This method is far less performing than /topics/{topicId}/posts/{postsId}. Use with caution.")
     @RequestMapping(value = "/{postId}", method = DELETE)
-    public void deletePostById(@PathVariable long postId  , Principal principal)throws ForbiddenException {
+    public void deletePostById(@PathVariable long postId ){
         postService.deletePostById(postId);
     }
 
     @ApiOperation(
             value = "Get all comment of a post")
     @RequestMapping(value = "/{postId}/comments", method = GET)
-    public List<Comment> getCommentsForPost(@PathVariable long postId  , Principal principal)throws ForbiddenException {
+    public List<Comment> getCommentsForPost(@PathVariable long postId) {
         return postService.getCommentsForPost(postId);
     }
 
     @ApiOperation(
             value = "Get a comment of a post")
     @RequestMapping(value = "/{postId}/comments/{commentId}", method = GET)
-    public Comment getCommentForPost(@PathVariable long postId, @PathVariable long commentId
-            , Principal principal)throws ForbiddenException {
+    public Comment getCommentForPost(@PathVariable long postId, @PathVariable long commentId) {
         return postService.getCommentForPost(commentId, postId);
     }
 
     @ApiOperation(
             value = "Create a new comment for a post")
     @RequestMapping(value = "/{postId}/comments", method = POST)
-    public void addCommentToPost(@PathVariable long postId, @RequestBody Comment comment, Principal principal)throws ForbiddenException {
+    public void addCommentToPost(@PathVariable long postId, @RequestBody Comment comment, Principal principal) {
         comment.setAuthor(principal.getName());
         postService.addCommentToPost(comment, postId);
     }
@@ -102,10 +96,7 @@ public class PostRestController {
             value = "Update a comment from a post",
             notes = "id should be provided in the request body comment")
     @RequestMapping(value = "/{postId}/comments", method = PUT)
-    public void updateCommentForPost(@PathVariable long postId, @RequestBody Comment comment, Principal principal) throws ForbiddenException {
-        if (!principal.getName().equals(comment.getAuthor()) || !principal.toString().contains("ROLE_moderator")){
-            throw new ForbiddenException("Not allowed!");
-        }
+    public void updateCommentForPost(@PathVariable long postId, @RequestBody Comment comment){
         postService.updateCommentForPost(comment, postId);
     }
 
@@ -114,21 +105,15 @@ public class PostRestController {
             notes = "commentId in URL will be used for selecting the comment")
     @RequestMapping(value = "/{postId}/comments/{commentId}", method = PUT)
     public void updateCommentForPost(@PathVariable long postId, @PathVariable long commentId,
-                                     @RequestBody Comment comment, Principal principal)throws ForbiddenException {
+                                     @RequestBody Comment comment){
         comment.setId(commentId);
-        if (!principal.getName().equals(comment.getAuthor()) || !principal.toString().contains("ROLE_moderator")){
-            throw new ForbiddenException("Not allowed!");
-        }
         postService.updateCommentForPost(comment, postId);
     }
 
     @ApiOperation(
             value = "Delete a comment from a post")
     @RequestMapping(value = "/{postId}/comments/{commentId}", method = DELETE)
-    public void deleteCommentForPost(@PathVariable long postId, @PathVariable long commentId, Principal principal)throws ForbiddenException {
-        if (!principal.toString().contains("ROLE_moderator")){
-            throw new ForbiddenException("This user doesn't have moderator rights!");
-        }
+    public void deleteCommentForPost(@PathVariable long postId, @PathVariable long commentId) {
         postService.deleteCommentForPost(commentId, postId);
     }
 }
