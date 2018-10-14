@@ -36,30 +36,30 @@ public class TopicService {
     }
 
     public Topic findTopicById(long id) {
-        return topicRepository.findOne(id);
+        return topicRepository.findById(id).get();
     }
 
     @Transactional
     public void deleteTopicById(long id) {
-        topicRepository.delete(id);
+        topicRepository.deleteById(id);
     }
 
     @Transactional
     public void addPostForTopic(Post post, long topicId) {
         post.setCreationTime(now());
-        Topic topic = topicRepository.findOne(topicId);
+        Topic topic = topicRepository.findById(topicId).get();
         postRepository.save(post);
         topic.getPosts().add(post);
         topicRepository.saveAndFlush(topic);
     }
 
     public List<Post> getPostsForTopic(long id) {
-        return topicRepository.findOne(id).getPosts();
+        return topicRepository.findById(id).get().getPosts();
     }
 
     @Transactional
     public void updateTopic(Topic topic) {
-        Topic persistedTopic = topicRepository.findOne(topic.getId());
+        Topic persistedTopic = topicRepository.findById(topic.getId()).get();
         persistedTopic.setTitle(topic.getTitle());
         persistedTopic.setDescription(topic.getDescription());
         persistedTopic.setAuthor(topic.getAuthor());

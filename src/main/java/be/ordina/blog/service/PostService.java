@@ -34,13 +34,13 @@ public class PostService {
     }
 
     public Post getPostById(long id) {
-        return postRepository.findOne(id);
+        return postRepository.findById(id).get();
     }
 
     @Transactional
     public void addCommentToPost(Comment comment, Long id) {
         comment.setCreationTime(now());
-        Post parentPost = postRepository.findOne(id);
+        Post parentPost = postRepository.findById(id).get();
         parentPost.getComments().add(comment);
         commentRepository.save(comment);
         postRepository.save(parentPost);
@@ -54,7 +54,7 @@ public class PostService {
         Post postToRemove = parentTopic.getPosts().stream().filter(p->p.getId() == postId).findFirst().get();
         parentTopic.getPosts().remove(postToRemove);
         topicRepository.saveAndFlush(parentTopic);
-        postRepository.delete(postId);
+        postRepository.deleteById(postId);
     }
 
     @Transactional
