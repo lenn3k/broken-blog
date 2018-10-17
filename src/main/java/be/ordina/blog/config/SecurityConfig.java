@@ -22,10 +22,9 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/v1/*")
-                .hasRole("")
-                .anyRequest()
-                .permitAll();
+                .antMatchers(HttpMethod.GET, "/api/v1/*").permitAll();
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/api/v1/*").permitAll();
         http.authorizeRequests()
                 .antMatchers("/api/v1/*")
                 .hasRole("user") // only user with role user are allowed to access

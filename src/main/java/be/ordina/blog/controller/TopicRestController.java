@@ -4,6 +4,8 @@ import be.ordina.blog.model.Post;
 import be.ordina.blog.model.Topic;
 import be.ordina.blog.service.TopicService;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +17,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 //@CrossOrigin(allowCredentials="true")
 public class TopicRestController {
 
+    private static Logger logger = LoggerFactory.getLogger(PostRestController.class);
+
     private TopicService topicService;
 
     public TopicRestController(TopicService topicService) {
@@ -25,6 +29,7 @@ public class TopicRestController {
             value = "Get all topics")
     @RequestMapping(method = GET)
     public List<Topic> getAllTopics() {
+        logger.info("Request to get all topics");
         return topicService.getAllTopics();
     }
 
