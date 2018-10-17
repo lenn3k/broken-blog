@@ -21,6 +21,7 @@ public class Topic extends Ownable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
     @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime creationTime;
 
     public Topic(){}
