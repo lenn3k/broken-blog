@@ -1082,7 +1082,7 @@
         "clientAuthenticatorType" : "client-secret",
         "secret" : "web_app",
         "redirectUris" : [ "http://localhost:8080/*", "http://localhost:9000/*", "http://127.0.0.1:8761/*" ],
-        "webOrigins" : [ "http://localhost:8080/*", "http://localhost:9000/*", "http://127.0.0.1:8761/*" ],
+        "webOrigins" : [ "*" ],
         "notBefore" : 0,
         "bearerOnly" : false,
         "consentRequired" : false,
