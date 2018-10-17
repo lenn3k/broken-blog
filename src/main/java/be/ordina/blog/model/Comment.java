@@ -17,6 +17,7 @@ public class Comment extends Ownable {
     private long id;
     private String body;
     @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime creationTime;
 
     public Comment() {}
