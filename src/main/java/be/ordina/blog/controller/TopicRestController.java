@@ -14,6 +14,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping("/api/v1/topics")
+//@CrossOrigin(allowCredentials="true")
 public class TopicRestController {
 
     private static Logger logger = LoggerFactory.getLogger(PostRestController.class);

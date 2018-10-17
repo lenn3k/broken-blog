@@ -7,6 +7,7 @@ import be.ordina.blog.model.Topic;
 import be.ordina.blog.repository.CommentRepository;
 import be.ordina.blog.repository.PostRepository;
 import be.ordina.blog.repository.TopicRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -40,6 +41,7 @@ public class PostService {
     }
 
     @Transactional
+    @PreAuthorize("hasRole('ROLE_user')")
     public void addCommentToPost(Comment comment, Long id) {
         comment.setCreationTime(now());
         Post parentPost = postRepository.findById(id).get();
@@ -49,6 +51,7 @@ public class PostService {
     }
 
     @Transactional
+    @PreAuthorize("hasRole('ROLE_moderator')")
     public void deletePostById(long postId) {
         List<Topic> allTopics = topicRepository.findAll();
         // Terrible performance. It' the worst performance. Huuuuge performance loss. Like you wouldn't believe
@@ -60,6 +63,7 @@ public class PostService {
     }
 
     @Transactional
+    @PreAuthorize("#comment.getAuthor().equals(principal.name) OR hasRole('ROLE_moderator')")
     public void updateCommentForPost(Comment comment, long postId) {
         Post post = postRepository.getOne(postId);
         Comment commentToModify = post.getComments().stream().filter(c->c.getId() == comment.getId()).findFirst().get();
@@ -73,6 +77,7 @@ public class PostService {
     }
 
     @Transactional
+    @PreAuthorize("#post.getAuthor().equals(principal.name) OR hasRole('ROLE_moderator')")
     public void updatePost(Post post) {
         Post postToModify = postRepository.getOne(post.getId());
         if(!StringUtils.isEmpty(post.getTitle())) {
@@ -88,6 +93,7 @@ public class PostService {
     }
 
     @Transactional
+    @PreAuthorize("hasRole('ROLE_admin')")
     public void deleteCommentForPost(long commentId, long postId) {
         Post post = postRepository.getOne(postId);
         Comment comment = post.getComments().stream().filter(c->c.getId() == commentId).findFirst().get();
