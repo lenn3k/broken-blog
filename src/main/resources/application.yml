@@ -15,7 +15,7 @@ spring:
         hibernate:
             ddl-auto: update
 keycloak:
-    auth-server-url: http://127.0.0.1:9080/auth/
+    auth-server-url: http://localhost:9080/auth/
     resource: broken-blog-app
     realm: brokenblog
     public-client: true

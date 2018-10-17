@@ -12,7 +12,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping("/api/v1/topics")
-@CrossOrigin("*")
+//@CrossOrigin(allowCredentials="true")
 public class TopicRestController {
 
     private TopicService topicService;
