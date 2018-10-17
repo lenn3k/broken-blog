@@ -26,8 +26,18 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/api/v1/*").permitAll();
         http.authorizeRequests()
-                .antMatchers("/api/v1/*")
-                .hasRole("user") // only user with role user are allowed to access
+                .antMatchers(HttpMethod.POST,"/api/v1/*")
+                .hasRole("USER") // only user with role user are allowed to access
+                .anyRequest()
+                .permitAll();
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.PUT,"/api/v1/*")
+                .hasRole("USER") // only user with role user are allowed to access
+                .anyRequest()
+                .permitAll();
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.DELETE,"/api/v1/*")
+                .hasRole("USER") // only user with role user are allowed to access
                 .anyRequest()
                 .permitAll();
         http.csrf().disable();
